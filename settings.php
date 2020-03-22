@@ -140,7 +140,7 @@ extract(badad_keys());
 // Check for a writable plugin directory
 $path = plugin_dir_path( __FILE__ );
 if (!wp_is_writable($path)) {
-  echo "<h2>Your badad plugin folder is not writable on the server!</h2>
+  echo "<h2>Your 'badad' plugin folder is not writable on the server!</h2>
   <p>If you are using Apache, you might need to run:</p>
   <pre>sudo chown -R www-data:www-data $path</pre>
   <p>We can't do anymore until this gets fixed.</p>";
@@ -207,6 +207,14 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   <input class="button button-primary" type="submit" value="Login to Connect..." class="formbutton" />
   <br />
   </form>';
+
+  // Be pretty
+    echo "<br /><hr /><br />";
+
+  // Backup
+  echo '
+  <p><b>Reconnect by backup</b></p>
+  <p>Alternatively: if you have a backup of <b>connection.php</b>, upload it to the "badad" plugin folder on the server. (Note, it will only work with the original badAd Dev App you first connected it to.)</p>';
 
   // Be pretty
   echo "<br /><hr /><br />";
@@ -310,7 +318,8 @@ if ( current_user_can($badAd_alevel) ) {
       <label for="double_check_delete"> I am sure I want to update the keys.</label>
       <input class="button button-secondary" type="submit" value="Update all keys as shown">
     </form>
-    <br><hr>
+    <p>You can update these keys from the same Dev App and it will not disconnect your ads.</p>
+    <hr>
     </div>
     <script>
     function showDevKeysStatus() {
@@ -340,7 +349,8 @@ if ( current_user_can($badAd_alevel) ) {
     <label for="double_check_delete"> I am sure I want to delete this connection.</label>
     <input class="button button-secondary" type="submit" value="Disconnect and delete forever!">
     </form>
-    <br><hr>
+    <p>If you plan to recover this connection, backup <b>connection.php</b> from the "badad" plugin folder on the server before disconnecting.</p>
+    <hr>
     </div>
     <script>
     function showAppConnection() {
@@ -369,19 +379,14 @@ if ( current_user_can('update_plugins') ) { // Only admins or super admins
       <input type="radio" name="badad_access" value="admin"';
       checked('admin', $badad_access, true);
       echo '> Administrator for all<br>
-
       <input type="radio" name="badad_access" value="admineditor"';
       checked('admineditor', $badad_access, true);
       echo '> Administrator for Dev keys, Editor for App connection
       <br>
-
       <input type="radio" name="badad_access" value="editor"';
       checked('editor', $badad_access, true);
       echo '> Editor for all<br>
       <br>
-
-
-
       <br><br>
       <input class="button button-secondary" type="submit" value="Save">
     </form>
