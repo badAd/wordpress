@@ -150,8 +150,11 @@ if (!wp_is_writable($path)) {
 // Check keys
 if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   // add Dev keys
+  $callbackURL = plugin_dir_url('badad').'badad/callback.php'; // a better way
   echo '<h2>Add your badAd Developer API keys to get started!</h2>
-  <p>These can be found in your <a target="_blank" href="https://badad.one">badAd.one</a> Partner Center > Developer Center</p>
+  <p>These keys can be found or created in your <a target="_blank" href="https://badad.one">badAd.one</a> Partner Center > Developer Center</p>
+  <p><pre>Dev Callback URL: <b>'.$callbackURL.'</b> <i>(for badAd Developer Center: Dev App settings)</i></pre></p>
+  <br>
   <form method="post" action="options.php">';
     settings_fields( 'devkeys' );
     echo '<h4>Keys</h4>
