@@ -231,7 +231,7 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   echo "<br>";
   echo "<p><pre><b>[badad]</b> <i>Retrieve ads from badAd, share count (too many slows your website load time)</i></pre></p>";
   echo "<h3><pre>[badad] options:</pre></h3>";
-  echo "<p><pre><b>[badad num=2 balink=no valign=no hit=no]</b> <i>(Defaults)</i></pre></p>";
+  echo "<p><pre><b>[badad num=2 balink=no valign=no hit=no]</b> <i>(Defaults, two ads side-by-side)</i></pre></p>";
   echo "<p><pre> <b>num=</b> <i>Number 1-20: how many ads to show (1 share per ad)</i></pre></p>";
   echo "<p><pre> <b>balink=</b> <i>yes/no: Count-shares-if-clicked referral link, text only (share count of 1 ad)</i></pre></p>";
   echo "<p><pre> <b>valign=</b> <i>yes/no: Align ads vertically? (no effect on share count)</i></pre></p>";
