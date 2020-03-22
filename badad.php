@@ -5,7 +5,7 @@
 
 /*
 Plugin Name: badAd
-Plugin URI: https://github.com/inkverb/badAd
+Plugin URI: https://github.com/badAd/wordpress
 Description: The official badAd.one API plugin for WordPress
 Version: 0.0.1
 Author: inkVerb
@@ -43,11 +43,33 @@ class Bad_Ad {
 		$this->plugin = plugin_basename( __FILE__ );
 	}
 
+	function badad_settings_init() {
+		// Status
+		add_option('badad_testlive', 'test');
+		register_setting( 'status', 'badad_testlive' );
+
+		// Dev Keys
+		add_option('badad_live_pub', null);
+		register_setting( 'devkeys', 'badad_live_pub' );
+		add_option('badad_live_sec', null);
+		register_setting( 'devkeys', 'badad_live_sec' );
+		add_option('badad_test_pub', null);
+		register_setting( 'devkeys', 'badad_test_pub' );
+		add_option('badad_test_sec', null);
+		register_setting( 'devkeys', 'badad_test_sec' );
+
+		// Status
+		add_option('badad_access', 'admin');
+		register_setting( 'access', 'badad_access' );
+
+	}
+
 	function register() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
+		add_action('admin_init', array( $this, 'badad_settings_init' ) );
 	}
 
 	public function settings_link( $links ) {
@@ -56,13 +78,13 @@ class Bad_Ad {
 		return $links;
 	}
 
-	public function add_settings_page() {
-		add_options_page( 'badAd', 'badAd', 'administrator', 'badad-settings', array( $this, 'settings_index' ), 110 );
-	}
-
 	public function settings_index() {
 		require_once plugin_dir_path( __FILE__ ) . 'settings.php';
 
+	}
+
+	public function add_settings_page() {
+		add_options_page( 'badAd', 'badAd', 'edit_posts', 'badad-settings', array( $this, 'settings_index' ), 110 );
 	}
 
 	function enqueue() {
@@ -81,6 +103,10 @@ class Bad_Ad {
 		badAdDeactivate::deactivate();
 	}
 
+	function uninstall() {
+		badAdUninstall::uninstall();
+	}
+
 }
 
 // register
@@ -97,6 +123,7 @@ register_activation_hook( __FILE__, array( $badAd, 'activate' ) ); // Can't use 
 register_deactivation_hook( __FILE__, array( 'badAdDeactivate', 'deactivate' ) );
 
 // uninstall
+register_uninstall_hook( __FILE__, array( 'badAdUninstall', 'uninstall' ) );
 
 // functions
 require_once plugin_dir_path( __FILE__ ) . 'functions.php';

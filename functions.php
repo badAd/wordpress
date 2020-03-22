@@ -1,22 +1,169 @@
 <?php
+/**
+* @package badAd
+*/
 
-// $resiteURL = // Get this from the database
-$resiteURL = 'https://badad.one/VYGfZF0SOn3XyifpXG9jukCgGUTYAMG00ANEsmo5y2LKfnOhYHMAS1GVEoGcPDfqlQFyycnS3nPMkCpenwnEpQ5J4qinimMVqqPAZveaasVUWUpMfJW2Z0695bCjYPxV5LccXHJouwX3lBj5JTOP44ufd9dNHBnreJLKDoY1QpXQ7r1dtVpeT5keWSOUchtNeORhSBAJRBY7giuSNSfNGqDOKqx7ChUX4B2PBtCsFWlk6dJeWpoooC8L7bolELK/site.html';
+// Get this from the database
+// $partner_resiteURL
+//$partner_resiteURL = 'https://badad.one/VYGfZF0SOn3XyifpXG9jukCgGUTYAMG00ANEsmo5y2LKfnOhYHMAS1GVEoGcPDfqlQFyycnS3nPMkCpenwnEpQ5J4qinimMVqqPAZveaasVUWUpMfJW2Z0695bCjYPxV5LccXHJouwX3lBj5JTOP44ufd9dNHBnreJLKDoY1QpXQ7r1dtVpeT5keWSOUchtNeORhSBAJRBY7giuSNSfNGqDOKqx7ChUX4B2PBtCsFWlk6dJeWpoooC8L7bolELK/site.html';
+// Keys
+//$my_developer_sec_key = 'live_sec_PPQxXkzMhQTyOJTei00FZYhHIQLxWAS68iL8LJYu0FDUz4Uu6jjTve6tL46NVdlt';
+//$partner_call_key = 'call_key_f52XYJc45gn73Gj63u3fuuGfhbyl8gLZKEzaMTupQDN8sJp6ecVWNdPz9TjuHXhA';
 
-function badadcred() {
-  global $resiteURL;
-  $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/assets/badadcred.gif" /></a></p>';
+// Keys
+function badad_keys() {
+  $connectionFile = plugin_dir_path( __FILE__ ) . 'connection.php';
+  $devkeyFile = plugin_dir_path( __FILE__ ) . 'devkeys.php';
+  if ( file_exists($devkeyFile) ) {
+    include $devkeyFile;
+    $badad_devset = true;
+  } else {
+    $my_developer_pub_key = '';
+    $my_developer_sec_key = '';
+    $badad_devset = false;
+  }
+  if ( file_exists($connectionFile) ) {
+    include $connectionFile; // Make sure we get our variable one way or another
+    $partner_resiteURL = "https://badad.one/$partner_resiteSLUG/site.html";
+    $badad_connection = true;
+  } else {
+    $partner_call_key = '';
+    $partner_resiteSLUG = '';
+    $partner_resiteURL = 'https://badad.one/';
+    $badad_connection = false;
+  }
+
+  // We need our variables
+  return compact(
+    'partner_call_key',
+    'partner_resiteSLUG',
+    'partner_resiteURL',
+    'my_developer_pub_key',
+    'my_developer_sec_key',
+    'badad_devset',
+    'badad_connection'
+  );
+}
+extract(badad_keys());
+
+// Pic Credit-referral
+function badad_refer() {
+  global $partner_resiteURL;
+  $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/assets/badadcred.gif" /></a></p>';
   return $content;
 }
+add_shortcode('badadrefer', 'badad_refer');
 
-add_shortcode('badadcred', 'badadcred');
-
-function badadcredTXT() {
-  global $resiteURL;
-  $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $resiteURL . '"><b>badAd.one</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
+// Text Credit-referral
+function badad_referTXT() {
+  global $partner_resiteURL;
+  $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><b>badAd.one</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
   return $content;
 }
+add_shortcode('badadrefertxt', 'badad_referTXT');
 
-add_shortcode('badadcredtxt', 'badadcredTXT');
+// Embedded ads via API
+function badad_ads( $atts = array() ) {
+  global $my_developer_sec_key;
+  global $partner_call_key;
 
-//function ads(int $num, string $align, bool $cred, bool $hit) {}
+  // Defaults
+    extract(shortcode_atts(array(
+      'num' => 2,
+      'balink' => 'no',
+      'valign' => 'no',
+      'hit' => 'no'
+    ), $atts));
+
+  // Regex tests
+    // $num
+    if (filter_var($num, FILTER_VALIDATE_INT, array("options"=>array('min_range'=>0, 'max_range'=>20)))) {
+      $num = $num;
+    } else {
+      $num = 2;
+    }
+    // $balink
+    if ((isset($balink)) && ($balink == 'yes')) {
+      $balink = true;
+    } else {
+      $balink = false;
+    }
+    // $valign
+    if ((isset($valign)) && ($valign == 'yes')) { // Human setting is reverse from the api
+      $valign = false;
+    } else {
+      $valign = true;
+    }
+    // $hit
+    if ((isset($hit)) && ($hit == 'yes')) { // Human setting is reverse from the api
+      $hit = false;
+    } else {
+      $hit = true;
+    }
+
+  // Build the _POST
+  $post = http_build_query(
+    array(
+      'num_ads' => $num, // Optional, 1-20, default 1
+      'show_badad_link' => $balink, // Optional, default false
+      'inline_div' => $valign, // Optional, default false
+      'no_hit' => $hit, // Optional, default false; if TRUE this counts the same shares, but not as a "hit" in stats, use in sequential calls to avoid triggering multiple "hits" in Partner stats when making more than one call on a single page
+
+      'dev_key' => $my_developer_sec_key,
+      'call_key' => $partner_call_key
+    )
+  );
+
+  // _POST envelope
+  $optns = array('http' =>
+    array(
+      'method' => 'POST',
+      'header' => 'Content-Type: application/x-www-form-urlencoded',
+      'content' => $post
+    )
+  );
+
+  // Give the _POST a hearty sendoff
+  $context = stream_context_create($optns);
+  $response = file_get_contents('https://api.badad.one/render.php', false, $context);
+  if ((isset($response)) && ($response != '')) {
+    echo "<p></p>$response<p></p>"; // This $response is the HTML payload fetched from our Dev API
+  }
+
+}
+add_shortcode('badad', 'badad_ads');
+
+// Fetch Partner meta
+function badad_meta() {
+  global $my_developer_sec_key;
+  global $partner_call_key;
+
+    $post = http_build_query(
+      array(
+        'dev_key' => $my_developer_sec_key,
+        'call_key' => $partner_call_key,
+      )
+    );
+
+    $optns = array('http' =>
+      array(
+        'method' => 'POST',
+        'header' => 'Content-Type: application/x-www-form-urlencoded',
+        'content' => $post
+      )
+    );
+
+    $context = stream_context_create($optns);
+    $response = file_get_contents('https://api.badad.one/fetchmeta.php', false, $context);
+    if ((!isset($response)) || ($response == '')) {
+      echo "<div class=\"connected\"><p>Connection not working! Is this plugin set to the same <b>test/live</b> status as your Dev App in the badAd Developer Center?</p></div>";
+    } else {
+      echo "<div class=\"connected\"><p></p>$response<p></p></div>"; // This $response is the HTML payload fetched from our Dev API
+    }
+
+    // We need our variables
+    $connection_meta_response = $response;
+    return compact(
+      'connection_meta_response'
+    );
+}
