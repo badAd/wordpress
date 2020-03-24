@@ -6,10 +6,10 @@
 /*
 Plugin Name: badAd
 Plugin URI: https://github.com/badAd/wordpress
-Description: The official badAd.one API plugin for WordPress
-Version: 0.0.1
-Author: inkVerb
-Author URI: http://verb.ink
+Description: The official badAd.one plugin for WordPress
+Version: 1.0.0
+Author: badAd
+Author URI: https://badad.one
 License: GPLv3
 Text Domain: badad
 */
