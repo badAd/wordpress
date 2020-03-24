@@ -40,7 +40,31 @@ if ($badAd_drole == 'administrator') {$badAd_dlevel = 'activate_plugins';}
 elseif ($badAd_drole == 'editor') {$badAd_dlevel = 'edit_others_posts';}
 if ($badAd_arole == 'administrator') {$badAd_alevel = 'activate_plugins';}
 elseif ($badAd_arole == 'editor') {$badAd_alevel = 'edit_others_posts';}
-// Write our include files (For speed, keys for regular ads should utilize include, rather than SQL queries)
+
+/* Note to developers and WordPress.org reviewers
+
+- For speed, keys for regular calls to the badAd API should utilize include(), rather than SQL queries
+- These four files are created when adding keys:
+  - callback.php (created automatically by the badAd settings dashboard [this file, settings.php] after adding Dev Keys, used to talk to our API)
+  - devkeys.php  (created automatically by the badAd settings dashboard from settings stored using the WP native settings-database calls)
+  - connection.php (created when a user authorizes an API connection, used to store related connection "call" keys, these keys are stored nowhere else, this keeps the app light-weight)
+  - disconnect.php (created automatically by the badAd settings dashboard after a user authorizes an API connection, used to delete connection.php when clicking to Disconnect from the badAd settings dashboard, this file remains after connection.php is deleted, but is then useless)
+- Only devkeys.php and connection.php serve as our framework, having variables developers need to build on for plugins and themes dependent on this plugin:
+- What the framework files look like:
+  - devkeys.php:
+    ```
+    $my_developer_pub_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
+    $my_developer_sec_key = 'some_sec_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
+    ```
+  - connection.php:
+    ```
+    $partner_call_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
+    $partner_resiteSLUG = '0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghij';
+    ```
+
+*/
+
+// Write our include files //
 // Write callback.php
 // Initiate $wp_filesystem
 global $wp_filesystem;
