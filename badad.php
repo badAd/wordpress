@@ -58,6 +58,12 @@ class Bad_Ad {
 		add_option('badad_test_sec', null);
 		register_setting( 'devkeys', 'badad_test_sec' );
 
+		// Connection
+		add_option('badad_call_key', null);
+		register_setting( 'connection', 'badad_call_key' );
+		add_option('badad_siteslug', null);
+		register_setting( 'connection', 'badad_siteslug' );
+
 		// Status
 		add_option('badad_access', 'admin');
 		register_setting( 'access', 'badad_access' );

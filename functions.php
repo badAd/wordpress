@@ -167,7 +167,7 @@ function badad_meta() {
   }
 
   // We need our variables
-  $connection_meta_response = $response;
+  $connection_meta_response = $clean_response;
   return compact(
     'connection_meta_response'
   );

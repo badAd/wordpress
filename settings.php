@@ -8,6 +8,8 @@ $badad_live_pub = get_option('badad_live_pub');
 $badad_live_sec = get_option('badad_live_sec');
 $badad_test_pub = get_option('badad_test_pub');
 $badad_test_sec = get_option('badad_test_sec');
+$badad_call_key = get_option('badad_call_key');
+$badad_siteslug = get_option('badad_siteslug');
 if (($badad_live_pub == '') || ($badad_live_pub == null)
  || ($badad_live_sec == '') || ($badad_live_sec == null)
  || ($badad_test_pub == '') || ($badad_test_pub == null)
@@ -16,6 +18,12 @@ if (($badad_live_pub == '') || ($badad_live_pub == null)
  } else {
    $badad_plugin = 'set';
  }
+if (($badad_call_key == '') || ($badad_call_key == null)
+ || ($badad_siteslug == '') || ($badad_siteslug == null)) {
+  $badad_connection = 'notset';
+} else {
+  $badad_connection = 'set';
+}
 if ($badad_status == 'live') {
   $write_dev_pub_key = $badad_live_pub;
   $write_dev_sec_key = $badad_live_sec;
@@ -53,11 +61,13 @@ elseif ($badAd_arole == 'editor') {$badAd_alevel = 'edit_others_posts';}
 - What the framework files look like:
   - devkeys.php:
     ```
+    <?php
     $my_developer_pub_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
     $my_developer_sec_key = 'some_sec_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
     ```
   - connection.php:
     ```
+    <?php
     $partner_call_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
     $partner_resiteSLUG = '0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghij';
     ```
@@ -65,20 +75,19 @@ elseif ($badAd_arole == 'editor') {$badAd_alevel = 'edit_others_posts';}
 */
 
 // Write our include files //
-// Write callback.php
 // Initiate $wp_filesystem
 global $wp_filesystem;
 if (empty($wp_filesystem)) {
   require_once (ABSPATH . '/wp-admin/includes/file.php');
   WP_Filesystem();
 }
-// Write connect.php
+// Write callback.php
 $callbackFile = plugin_dir_path( __FILE__ ).'callback.php';
 $connectionKeyFile = plugin_dir_path( __FILE__ ).'connection.php';
 $connectionDelFile = plugin_dir_path( __FILE__ ).'disconnect.php';
 $badadSettingsPage = admin_url( 'options-general.php?page=badad-settings' );
 
-if (( ! $wp_filesystem->exists($callbackFile) ) || (strpos ( WP_Filesystem_Direct::get_contents($callbackFile), $write_dev_pub_key) === false )) {
+if (( ! $wp_filesystem->exists($callbackFile) ) || (strpos ( file_get_contents($callbackFile), $write_dev_pub_key) === false )) {
   $callbackContentsPHP = <<<'EOP'
 <?php
 if ((isset($_POST['badad_connect_response']))
@@ -121,8 +130,31 @@ EOH;
 }
 // end callback.php
 
+// Check connection.php
+if ((( ! $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'set' ))
+   || (( $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'set' )
+      && ((strpos ( file_get_contents($connectionKeyFile), $badad_call_key) === false )
+       || (strpos ( file_get_contents($connectionKeyFile), $badad_siteslug) === false )))) {
+
+  // Write connection.php
+  $connectionKeys = <<<CONN
+<?php
+\$partner_call_key = '$badad_call_key';
+\$partner_resiteSLUG = '$badad_siteslug';
+CONN;
+  $wp_filesystem->put_contents( $connectionKeyFile, $connectionKeys, FS_CHMOD_FILE ); // predefined mode settings for WP files
+  include $connectionKeyFile; // Make sure we get our variable one way or another
+
+} elseif (( $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'notset' )) {
+
+  // Enter the call_key into the WP settings database
+  include $connectionKeyFile; // Make sure we get our variable one way or another
+  update_option('badad_call_key', $partner_call_key);
+  update_option('badad_siteslug', $partner_resiteSLUG);
+}
+
 // Double check disconnect.php
-if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( WP_Filesystem_Direct::get_contents($connectionDelFile), $badad_test_sec) === false ))) {
+if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( file_get_contents($connectionDelFile), $badad_test_sec) === false ))) {
   $connectionDelete = <<<CDEL
 <?php
 if ((\$_SERVER['REQUEST_METHOD'] === 'POST') && (isset(\$_POST['dk'])) && (\$_POST['dk'] == '$badad_test_sec')) {
@@ -237,14 +269,6 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
 
   // Be pretty
     echo "<br /><hr /><br />";
-
-  // Backup
-  echo '
-  <p><b>Reconnect by backup</b></p>
-  <p>Alternatively: if you have a backup of <b>connection.php</b>, upload it to the "badad" plugin folder on the server. (Note, it will only work with the original badAd Dev App you first connected it to.)</p>';
-
-  // Be pretty
-  echo "<br /><hr /><br />";
 
 } elseif ( current_user_can('edit_posts') ) {
   // All Contributors
@@ -376,7 +400,7 @@ if ( current_user_can($badAd_alevel) ) {
     <label for="double_check_delete"> I am sure I want to delete this connection.</label>
     <input class="button button-secondary" type="submit" value="Disconnect and delete forever!">
     </form>
-    <p>If you plan to recover this connection, backup <b>connection.php</b> from the "badad" plugin folder on the server before disconnecting.</p>
+    <br>
     <hr>
     </div>
     <script>
