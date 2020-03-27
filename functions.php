@@ -14,7 +14,13 @@
 function badad_keys() {
   $connectionFile = plugin_dir_path( __FILE__ ) . 'connection.php';
   $devkeyFile = plugin_dir_path( __FILE__ ) . 'devkeys.php';
-  if ( file_exists($devkeyFile) ) {
+  global $wp_filesystem;
+  if (empty($wp_filesystem)) {
+    require_once (ABSPATH . '/wp-admin/includes/file.php');
+    WP_Filesystem();
+  }
+
+  if ( $wp_filesystem->exists($devkeyFile) ) {
     include $devkeyFile;
     $badad_devset = true;
   } else {
@@ -22,15 +28,15 @@ function badad_keys() {
     $my_developer_sec_key = '';
     $badad_devset = false;
   }
-  if ( file_exists($connectionFile) ) {
+  if ( $wp_filesystem->exists($connectionFile) ) {
     include $connectionFile; // Make sure we get our variable one way or another
     $partner_resiteURL = "https://badad.one/$partner_resiteSLUG/site.html";
-    $badad_connection = true;
+    //$badad_connection_file = true;
   } else {
     $partner_call_key = '';
     $partner_resiteSLUG = '';
     $partner_resiteURL = 'https://badad.one/';
-    $badad_connection = false;
+    //$badad_connection_file = false;
   }
 
   // We need our variables
@@ -40,8 +46,8 @@ function badad_keys() {
     'partner_resiteURL',
     'my_developer_pub_key',
     'my_developer_sec_key',
-    'badad_devset',
-    'badad_connection'
+    'badad_devset'
+    //'badad_connection_file'
   );
 }
 extract(badad_keys());

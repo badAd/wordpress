@@ -24,6 +24,7 @@ if (($badad_call_key == '') || ($badad_call_key == null)
 } else {
   $badad_connection = 'set';
 }
+
 if ($badad_status == 'live') {
   $write_dev_pub_key = $badad_live_pub;
   $write_dev_sec_key = $badad_live_sec;
@@ -86,6 +87,13 @@ $callbackFile = plugin_dir_path( __FILE__ ).'callback.php';
 $connectionKeyFile = plugin_dir_path( __FILE__ ).'connection.php';
 $connectionDelFile = plugin_dir_path( __FILE__ ).'disconnect.php';
 $badadSettingsPage = admin_url( 'options-general.php?page=badad-settings' );
+if (( ! $wp_filesystem->exists($connectionKeyFile) )
+  || ( ! strpos ( file_get_contents($connectionKeyFile), $badad_call_key) === true )
+  || ( ! strpos ( file_get_contents($connectionKeyFile), $badad_siteslug) === true )) {
+  $badad_connection_file = false;
+} else {
+  $badad_connection_file = true;
+}
 
 if (( ! $wp_filesystem->exists($callbackFile) ) || (strpos ( file_get_contents($callbackFile), $write_dev_pub_key) === false )) {
   $callbackContentsPHP = <<<'EOP'
@@ -231,7 +239,7 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   <h2>Need help?</h2>
   <p><a target="_blank" href="https://badad.one/help_videos.php">Learn more</a> or sign up to start monetizing today!</p>
   <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one">badAd.one</a> Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/help_videos.php">Learn more</a>.</p>';
-} elseif ( ( current_user_can($badAd_alevel) ) && ( $badad_connection == false ) ) {
+} elseif ( ( current_user_can($badAd_alevel) ) && ( $badad_connection_file == false ) && ( $badad_connection == 'notset' ) ) {
   // Forms to connect
 
   // User app_key
@@ -295,11 +303,15 @@ if ( current_user_can($badAd_alevel) ) {
   // App Connection
   if ( current_user_can($badAd_alevel) ) {
     // App Project
-    if ( $badad_connection == true ) {
-      echo "<p><i><b>Connected to App Project:</b><br>";
-      extract(badad_meta()); // use extract because we will use the response variable later
+    if ( $badad_connection == 'set' ) {
+      if ( $badad_connection_file == true ) {
+        echo "<p><i><b>Connected to App Project:</b><br>";
+        extract(badad_meta()); // use extract because we will use the response variable later
+      } elseif ( $badad_connection_file == false ) {
+        echo "<p><i>Connection just established. Reload this page to see your app connection status.<br>";
+      }
       echo "</i></p><hr>" ;
-    } elseif ( $badad_connection == false ) {
+    } elseif ( $badad_connection == 'notset' ) {
       echo "<p><b>Use the form above to connect.</b><br>";
     }
   }
