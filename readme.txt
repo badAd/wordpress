@@ -1,6 +1,6 @@
 === badAd ===
 
-Contributors:      jesselsteele
+Contributors:      <a href="https://profiles.wordpress.org/jesselsteele/">jesselsteele</a>
 Plugin Name:       badAd
 Plugin URI:        https://github.com/badAd/wordpress
 Tags:              advertise, monetize, ads, embed, ad shortcode

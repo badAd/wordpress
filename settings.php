@@ -78,7 +78,7 @@ $connectionKeyFile = plugin_dir_path( __FILE__ ).'connection.php';
 $connectionDelFile = plugin_dir_path( __FILE__ ).'disconnect.php';
 $badadSettingsPage = admin_url( 'options-general.php?page=badad-settings' );
 
-if (( ! $wp_filesystem->exists($callbackFile) ) || (strpos ( file_get_contents($callbackFile), $write_dev_pub_key) === false )) {
+if (( ! $wp_filesystem->exists($callbackFile) ) || (strpos ( WP_Filesystem_Direct::get_contents($callbackFile), $write_dev_pub_key) === false )) {
   $callbackContentsPHP = <<<'EOP'
 <?php
 if ((isset($_POST['badad_connect_response']))
@@ -122,7 +122,7 @@ EOH;
 // end callback.php
 
 // Double check disconnect.php
-if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( file_get_contents($connectionDelFile), $badad_test_sec) === false ))) {
+if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( WP_Filesystem_Direct::get_contents($connectionDelFile), $badad_test_sec) === false ))) {
   $connectionDelete = <<<CDEL
 <?php
 if ((\$_SERVER['REQUEST_METHOD'] === 'POST') && (isset(\$_POST['dk'])) && (\$_POST['dk'] == '$badad_test_sec')) {

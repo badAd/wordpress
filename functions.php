@@ -95,39 +95,40 @@ function badad_ads( $atts = array() ) {
       $valign = true;
     }
     // $hit
-    if ((isset($hit)) && ($hit == 'yes')) { // Human setting is reverse from the api
+    if ((isset($hit)) && ($hit == 'yes')) { // Human setting is reverse from the api (true = hide)
       $hit = false;
     } else {
       $hit = true;
     }
 
-  // Build the _POST
-  $post = http_build_query(
-    array(
-      'num_ads' => $num, // Optional, 1-20, default 1
-      'show_badad_link' => $balink, // Optional, default false
-      'inline_div' => $valign, // Optional, default false
-      'no_hit' => $hit, // Optional, default false; if TRUE this counts the same shares, but not as a "hit" in stats, use in sequential calls to avoid triggering multiple "hits" in Partner stats when making more than one call on a single page
+  // Build the _POST the WordPress way: wp_remote_post()
+  $body = array(
+    'num_ads' => $num, // Optional, 1-20, default 1
+    'show_badad_link' => $balink, // Optional, default false
+    'inline_div' => $valign, // Optional, default false
+    'no_hit' => $hit, // Optional, default false; if TRUE this counts the same shares, but not as a "hit" in stats, use in sequential calls to avoid triggering multiple "hits" in Partner stats when making more than one call on a single page
 
-      'dev_key' => $my_developer_sec_key,
-      'call_key' => $partner_call_key
-    )
+    'dev_key' => $my_developer_sec_key,
+    'call_key' => $partner_call_key
   );
 
-  // _POST envelope
-  $optns = array('http' =>
-    array(
-      'method' => 'POST',
-      'header' => 'Content-Type: application/x-www-form-urlencoded',
-      'content' => $post
-    )
+  // _POST envelope the WordPress way: wp_remote_post()
+  $args = array(
+    'body' => $body,
+    'timeout' => '5',
+    'redirection' => '5',
+    'httpversion' => '1.0',
+    'blocking' => true,
+    'headers' => array(),
+    'cookies' => array()
   );
 
-  // Give the _POST a hearty sendoff
-  $context = stream_context_create($optns);
-  $response = file_get_contents('https://api.badad.one/render.php', false, $context);
+  // Give the _POST a hearty sendoff the WordPress way: wp_remote_post()
+  $response = wp_remote_post('https://api.badad.one/render.php', $args);
   if ((isset($response)) && ($response != '')) {
-    echo "<p></p>$response<p></p>"; // This $response is the HTML payload fetched from our Dev API
+    // Filter this glob we got back through the API
+    $clean_response = $response['body'];
+    echo "<p></p>$clean_response<p></p>"; // This $response is the HTML payload fetched from our Dev API
   }
 
 }
@@ -138,32 +139,36 @@ function badad_meta() {
   global $my_developer_sec_key;
   global $partner_call_key;
 
-    $post = http_build_query(
-      array(
-        'dev_key' => $my_developer_sec_key,
-        'call_key' => $partner_call_key,
-      )
-    );
+  // Build the _POST the WordPress way: wp_remote_post()
+  $body = array(
+    'dev_key' => $my_developer_sec_key,
+    'call_key' => $partner_call_key,
+  );
 
-    $optns = array('http' =>
-      array(
-        'method' => 'POST',
-        'header' => 'Content-Type: application/x-www-form-urlencoded',
-        'content' => $post
-      )
-    );
+  // _POST envelope the WordPress way: wp_remote_post()
+  $args = array(
+    'body' => $body,
+    'timeout' => '15',
+    'redirection' => '15',
+    'httpversion' => '1.0',
+    'blocking' => true,
+    'headers' => array(),
+    'cookies' => array()
+  );
 
-    $context = stream_context_create($optns);
-    $response = file_get_contents('https://api.badad.one/fetchmeta.php', false, $context);
-    if ((!isset($response)) || ($response == '')) {
-      echo "<div class=\"connected\"><p>Connection not working! Is this plugin set to the same <b>test/live</b> status as your Dev App in the badAd Developer Center?</p></div>";
-    } else {
-      echo "<div class=\"connected\"><p></p>$response<p></p></div>"; // This $response is the HTML payload fetched from our Dev API
-    }
+  // Give the _POST a hearty sendoff the WordPress way: wp_remote_post()
+  $response = wp_remote_post('https://api.badad.one/fetchmeta.php', $args);
+  if ((!isset($response)) || ($response == '')) {
+    echo "<div class=\"connected\"><p>Connection not working! Is this plugin set to the same <b>test/live</b> status as your Dev App in the badAd Developer Center?</p></div>";
+  } else {
+    // Filter this glob we got back through the API
+    $clean_response = $response['body'];
+    echo "<div class=\"connected\"><p></p>$clean_response<p></p></div>"; // This $response is the HTML payload fetched from our Dev API
+  }
 
-    // We need our variables
-    $connection_meta_response = $response;
-    return compact(
-      'connection_meta_response'
-    );
+  // We need our variables
+  $connection_meta_response = $response;
+  return compact(
+    'connection_meta_response'
+  );
 }
