@@ -98,7 +98,7 @@ if (( ! $wp_filesystem->exists($connectionKeyFile) )
   $badad_connection_file = true;
 }
 
-if (( ! $wp_filesystem->exists($callbackFile) ) || (strpos ( file_get_contents($callbackFile), $write_dev_pub_key) === false )) {
+if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile)) && ( $badad_connection == 'set' ) && (strpos ( file_get_contents($callbackFile), $write_dev_pub_key) === false ) ) ) {
   $callbackContentsPHP = <<<'EOP'
 <?php
 if ((isset($_POST['badad_connect_response']))
