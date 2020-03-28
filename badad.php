@@ -71,8 +71,8 @@ class Bad_Ad {
 	}
 
 	function register() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		//add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
 		add_action('admin_init', array( $this, 'badad_settings_init' ) );
@@ -95,8 +95,8 @@ class Bad_Ad {
 
 	function enqueue() {
 		// enqueue all our scripts
-		wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/badad_style.css', __FILE__ ) );
-		wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/badad_script.js', __FILE__ ) );
+		//wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/badad_style.css', __FILE__ ) );
+		//wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/badad_script.js', __FILE__ ) );
 	}
 
 	function activate() {

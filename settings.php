@@ -53,22 +53,25 @@ elseif ($badAd_arole == 'editor') {$badAd_alevel = 'edit_others_posts';}
 /* Note to developers and WordPress.org reviewers
 
 - For speed, keys for regular calls to the badAd API should utilize include(), rather than SQL queries
+- The variable values for these files are stored in wp_options via the WordPress API; upon viewing the plugin dashboard, the plugin renders these files if the files are missing
 - These four files are created when adding keys:
   - callback.php (created automatically by the badAd settings dashboard [this file, settings.php] after adding Dev Keys, used to talk to our API)
   - devkeys.php  (created automatically by the badAd settings dashboard from settings stored using the WP native settings-database calls)
-  - connection.php (created when a user authorizes an API connection, used to store related connection "call" keys, these keys are stored nowhere else, this keeps the app light-weight)
+  - connection.php (created when a user authorizes an API connection, used to store related connection "call" keys, these keys are added to the database from the file the first time it is created upon auto-redirect to the badAd settings dashboard)
   - disconnect.php (created automatically by the badAd settings dashboard after a user authorizes an API connection, used to delete connection.php when clicking to Disconnect from the badAd settings dashboard, this file remains after connection.php is deleted, but is then useless)
 - Only devkeys.php and connection.php serve as our framework, having variables developers need to build on for plugins and themes dependent on this plugin:
 - What the framework files look like:
   - devkeys.php:
     ```
     <?php
+    if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     $my_developer_pub_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
     $my_developer_sec_key = 'some_sec_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
     ```
   - connection.php:
     ```
     <?php
+    if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     $partner_call_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
     $partner_resiteSLUG = '0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghij';
     ```
@@ -88,8 +91,8 @@ $connectionKeyFile = plugin_dir_path( __FILE__ ).'connection.php';
 $connectionDelFile = plugin_dir_path( __FILE__ ).'disconnect.php';
 $badadSettingsPage = admin_url( 'options-general.php?page=badad-settings' );
 if (( ! $wp_filesystem->exists($connectionKeyFile) )
-  || ( ! strpos ( file_get_contents($connectionKeyFile), $badad_call_key) === true )
-  || ( ! strpos ( file_get_contents($connectionKeyFile), $badad_siteslug) === true )) {
+  || (( $badad_connection == 'set' ) && ( ! strpos ( file_get_contents($connectionKeyFile), $badad_call_key) === true ))
+  || (( $badad_connection == 'set' ) && ( ! strpos ( file_get_contents($connectionKeyFile), $badad_siteslug) === true ))) {
   $badad_connection_file = false;
 } else {
   $badad_connection_file = true;
@@ -106,10 +109,11 @@ if ((isset($_POST['badad_connect_response']))
 && (preg_match ('/[a-zA-Z0-9_]$/i', $_POST['partner_call_key']))
 && (preg_match ('/^call_key_(.*)/i', $_POST['partner_call_key']))
 && (preg_match ('/[a-zA-Z0-9]$/i', $_POST['partner_refcred']))) { // _POST all present and mild regex check
-$partner_call_key = $_POST['partner_call_key']; // Starts with: "call_key_" Keep this in your database for future API calls with this connected partner, it starts with: "call_key_"
-$partner_refcred = $_POST['partner_refcred']; // The "resite.html" URL, acting as BOTH a badAd click for Partner shares AND as a referral link for ad credits uppon purchase of a new customer
+$partner_call_key = preg_replace( '/[^a-zA-Z0-9_]/', '', $_POST['partner_call_key'] ); // Starts with: "call_key_" Keep this in your database for future API calls with this connected partner, it starts with: "call_key_"
+$partner_refcred = preg_replace( '/[^a-zA-Z0-9]/', '', $_POST['partner_refcred'] ); // The "resite.html" URL, acting as BOTH a badAd click for Partner shares AND as a referral link for ad credits uppon purchase of a new customer
 $connectionKeyContents = <<<EKK
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 \$partner_call_key = '$partner_call_key';
 \$partner_resiteSLUG = '$partner_refcred';
 EKK;
@@ -147,6 +151,7 @@ if ((( ! $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 
   // Write connection.php
   $connectionKeys = <<<CONN
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 \$partner_call_key = '$badad_call_key';
 \$partner_resiteSLUG = '$badad_siteslug';
 CONN;
@@ -165,6 +170,7 @@ CONN;
 if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( file_get_contents($connectionDelFile), $badad_test_sec) === false ))) {
   $connectionDelete = <<<CDEL
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ((\$_SERVER['REQUEST_METHOD'] === 'POST') && (isset(\$_POST['dk'])) && (\$_POST['dk'] == '$badad_test_sec')) {
 unlink('$connectionKeyFile');
 }
@@ -179,12 +185,14 @@ $wp_filesystem->put_contents( $connectionDelFile, $connectionDelete, FS_CHMOD_FI
 if ( $badad_status == 'live' ) {
   $devKeysContents = <<< EDK
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 \$my_developer_pub_key = '$badad_live_pub';
 \$my_developer_sec_key = '$badad_live_sec';
 EDK;
 } elseif ( $badad_status == 'test' ) {
   $devKeysContents = <<< EDK
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 \$my_developer_pub_key = '$badad_test_pub';
 \$my_developer_sec_key = '$badad_test_sec';
 EDK;
@@ -282,45 +290,44 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   // All Contributors
   // Shortcode help
   echo "<h2>Shortcodes:</h2>";
-  echo "<p><pre><b>[badadrefer]</b> <i>Count-shares-if-clicked referral link, with badAd logo image, no view share or hit count (loads fast)</i></pre></p>";
-  echo "<p><pre><b>[badadrefertxt]</b> <i>Count-shares-if-clicked referral link, text link only, no view share or hit count (loads fast)</i></pre></p>";
-  echo "<br>";
-  echo "<p><pre><b>[badad]</b> <i>Retrieve ads from badAd, share count (too many slows your website load time)</i></pre></p>";
-  echo "<h3><pre>[badad] options:</pre></h3>";
+  echo "<h3><pre>[badad]</pre></h3>";
+  echo "<p><pre><i>Retrieve ads from badAd, share count</i></pre></p>";
   echo "<p><pre><b>[badad num=2 balink=no valign=no hit=no]</b> <i>(Defaults, two ads side-by-side)</i></pre></p>";
   echo "<p><pre> <b>num=</b> <i>Number 1-20: how many ads to show (1 share per ad)</i></pre></p>";
   echo "<p><pre> <b>balink=</b> <i>yes/no: Count-shares-if-clicked referral link, text only (share count of 1 ad)</i></pre></p>";
   echo "<p><pre> <b>valign=</b> <i>yes/no: Align ads vertically? (no effect on share count)</i></pre></p>";
   echo "<p><pre> <b>hit=</b> <i>yes/no: Count as \"hit\" in Project Stats? (no effect on share count)</i><br><i> Tip: Set exactly ONE [badad] shortcode to 'hit=true' per page for accurate Stats</i></pre></p>";
+  echo "<br>";
+  echo "<h3><pre>[badadrefer]</pre></h3>";
+  echo "<p><pre><i>Count-shares-if-clicked referral link, no view share or hit count (loads fast)</i></pre></p>";
+  echo "<p><pre><b>[badadrefer type=refer]</b> <i>Text: <b>Claim your ad credit...</b> (Default)</i></pre></p>";
+  echo "<p><pre> <b>type=domain</b> <i>Text: <b>badAd.one</b></i></pre></p>";
+  echo "<p><pre> <b>type=pic</b> <i>Shows a small banner-ad that cycles badAd logos and slogans (may change when plugin is updated)</i></pre></p>";
   echo "<hr>";
 
 }
 
 // Plugin Settings
 if ( current_user_can($badAd_alevel) ) {
-  echo "<h2>Plugin Settings:</h2>";
+  echo "<h2>Connection Status:</h2>";
 
   // App Connection
-  if ( current_user_can($badAd_alevel) ) {
-    // App Project
-    if ( $badad_connection == 'set' ) {
-      if ( $badad_connection_file == true ) {
-        echo "<p><i><b>Connected to App Project:</b><br>";
-        extract(badad_meta()); // use extract because we will use the response variable later
-      } elseif ( $badad_connection_file == false ) {
-        echo "<p><i>Connection just established. Reload this page to see your app connection status.<br>";
-      }
-      echo "</i></p><hr>" ;
-    } elseif ( $badad_connection == 'notset' ) {
-      echo "<p><b>Use the form above to connect.</b><br>";
-    }
+  if (( $badad_connection == 'set' ) && ( $badad_connection_file == true )) {
+    echo "<p><i><b>Connected to App Project:</b></i></p>";
+    extract(badad_meta()); // use extract because we will use the response variable later
+  } elseif ((( $badad_connection == 'notset' ) && ( $badad_connection_file == true  ))
+    ||      (( $badad_connection == 'set'    ) && ( $badad_connection_file == false ))) {
+    echo "<p><i>Connection just established. Reload this page to see your app connection status.<br></i></p>";
+  } elseif  (( $badad_connection == 'notset' ) && ( $badad_connection_file == false )) {
+  echo "<p><b>Use the form above to connect.</b></p>";
   }
+
+  echo "<hr>";
 
   // Dev keys & callback
   if ( current_user_can($badAd_dlevel) ) {
     // Important info
-    // Create the badAd Dev Callback URL
-    //$callbackURL = get_home_url().'/wp-content/plugins/badad/callback.php'; // Works, but only maybe
+    echo "<h2>Reference:</h2>";
     $callbackURL = plugin_dir_url('badad').'badad/callback.php'; // a better way
     echo "<p><pre>WP Plugin Status: <b>$badad_status</b></pre></p>";
     echo "<p><pre>Dev Callback URL: <b>$callbackURL</b> <i>(for badAd Developer Center: Dev App settings)</i></pre></p>";
@@ -331,7 +338,7 @@ if ( current_user_can($badAd_alevel) ) {
 
 // Settings
 if ( current_user_can($badAd_alevel) ) {
-  echo "<h3>Danger Zone:</h3>";
+  echo "<h3>Danger Zone: Make changes</h3>";
 
   // Change Dev keys/status
   if ( current_user_can($badAd_dlevel) ) {

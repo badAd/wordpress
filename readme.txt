@@ -10,10 +10,19 @@ Requires at least: 5.3.2
 Tested up to:      5.3.2
 Stable tag:        1.0.0
 Version:           1.0.0
+Requires PHP:      7.2.0
 
 == Description ==
 
-The official plugin from badAd.one, this can help monetize your WordPress site by embedding badAd advertisements with a shortcode. Once you are a badAd Partner, this is plugin connects your WordPress site to the badAd "Dev API". Help videos are available.
+The official plugin from badAd.one, this can help monetize your WordPress site by embedding badAd advertisements with shortcodes. Once you are a badAd monetizing Partner, this is plugin connects your WordPress site to the badAd "Dev API". Help videos are available.
+
+Once connected, you can use two shortcodes:
+
+1. To embed ads for your badAd Partner account
+
+2. To embed a styled referral link for you and others to receive free ad credits, also adding to your Partner click count
+
+All the settings are on one page in your WordPress Dashboard with an easy walk-through.
 
 badAd.one is an advertising network that started in early 2020.
 
@@ -27,7 +36,19 @@ Requires WordPress 5.3 and PHP 7.
 
 == Screenshots ==
 
-Comming soon!
+1. What ads and your referral links look like on a website (inheriting the same font)
+
+2. Various shortcodes used in Widgets
+
+3. Simple shortcode example inside a post
+
+4. Shortcode tips in the admin area once connected to the badAd.one website
+
+5. Admin area when just installed, input your badAd Dev API keys here
+
+6. After Dev keys added, two simple ways to connect a specific monetizing Partner project
+
+7. Some more advanced settings availabe once connected
 
 == Changelog ==
 

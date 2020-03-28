@@ -3,13 +3,6 @@
 * @package badAd
 */
 
-// Get this from the database
-// $partner_resiteURL
-//$partner_resiteURL = 'https://badad.one/VYGfZF0SOn3XyifpXG9jukCgGUTYAMG00ANEsmo5y2LKfnOhYHMAS1GVEoGcPDfqlQFyycnS3nPMkCpenwnEpQ5J4qinimMVqqPAZveaasVUWUpMfJW2Z0695bCjYPxV5LccXHJouwX3lBj5JTOP44ufd9dNHBnreJLKDoY1QpXQ7r1dtVpeT5keWSOUchtNeORhSBAJRBY7giuSNSfNGqDOKqx7ChUX4B2PBtCsFWlk6dJeWpoooC8L7bolELK/site.html';
-// Keys
-//$my_developer_sec_key = 'live_sec_PPQxXkzMhQTyOJTei00FZYhHIQLxWAS68iL8LJYu0FDUz4Uu6jjTve6tL46NVdlt';
-//$partner_call_key = 'call_key_f52XYJc45gn73Gj63u3fuuGfhbyl8gLZKEzaMTupQDN8sJp6ecVWNdPz9TjuHXhA';
-
 // Keys
 function badad_keys() {
   $connectionFile = plugin_dir_path( __FILE__ ) . 'connection.php';
@@ -34,8 +27,8 @@ function badad_keys() {
     //$badad_connection_file = true;
   } else {
     $partner_call_key = '';
-    $partner_resiteSLUG = '';
-    $partner_resiteURL = 'https://badad.one/';
+    $partner_resiteSLUG = '444';
+    $partner_resiteURL = "https://badad.one/$partner_resiteSLUG/site.html";
     //$badad_connection_file = false;
   }
 
@@ -53,20 +46,27 @@ function badad_keys() {
 extract(badad_keys());
 
 // Pic Credit-referral
-function badad_refer() {
+function badad_refer( $atts = array() ) {
   global $partner_resiteURL;
-  $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/assets/badadcred.gif" /></a></p>';
+
+  // Defaults
+    extract(shortcode_atts(array(
+      'type' => 'refer'
+    ), $atts));
+
+    if (isset($type)) {
+      if ($type == 'refer') {
+        $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Claim your ad credit at badAd.one with this referral link..." rel="nofollow" href="' . $partner_resiteURL . '"><b>Claim your ad credit...</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
+      } elseif ($type == 'pic') {
+        $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/assets/badadcred.gif" /></a></p>';
+      } elseif ($type == 'domain') {
+        $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><b>badAd.one</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
+      }
+    }
+
   return $content;
 }
 add_shortcode('badadrefer', 'badad_refer');
-
-// Text Credit-referral
-function badad_referTXT() {
-  global $partner_resiteURL;
-  $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><b>badAd.one</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
-  return $content;
-}
-add_shortcode('badadrefertxt', 'badad_referTXT');
 
 // Embedded ads via API
 function badad_ads( $atts = array() ) {
