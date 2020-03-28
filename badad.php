@@ -6,19 +6,20 @@
 /*
 Plugin Name: badAd
 Plugin URI: https://github.com/badAd/wordpress
-Description: The official badAd.one plugin for WordPress
+Description: The official badAd.one plugin for WordPress: With a monetizing partner account, use this plugin to easily monetize your WordPress site with text ads and share your own signup referral link. If you need help getting an account, you can <a href="https://badad.one/444/site.html">signup here</a>.
 Version: 1.0.0
 Author: badAd
 Author URI: https://badad.one
-License: GPLv3
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: badad
 */
 
 /*
 badAd is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-any later version (GPLv2 or later).
+the Free Software Foundation, either version 3 of the License, or
+any later version (GPLv3 or later).
 
 badAd is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
