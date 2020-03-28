@@ -11,6 +11,7 @@ Tested up to:      5.3.2
 Stable tag:        1.0.0
 Version:           1.0.0
 Requires PHP:      7.2.0
+Donate link:       https://jesse.coffee/paypal
 
 == Description ==
 
@@ -19,7 +20,6 @@ The official plugin from badAd.one, this can help monetize your WordPress site b
 Once connected, you can use two shortcodes:
 
 1. To embed ads for your badAd Partner account
-
 2. To embed a styled referral link for you and others to receive free ad credits, also adding to your Partner click count
 
 All the settings are on one page in your WordPress Dashboard with an easy walk-through.
@@ -50,12 +50,6 @@ Requires WordPress 5.3 and PHP 7.
 
 7. Some more advanced settings availabe once connected
 
-== Changelog ==
-
-= 1.0.0 =
-
-First release
-
 == Frequently Asked Questions ==
 
 = Do I need a badAd.one account? =
@@ -78,3 +72,14 @@ They shouldn't. Our text ads try their best to inherit the styling of your WordP
 
 We try to keep things organized and grouped so that badAd ads aren't confused with your WordPress site's content. These ads should still should look like they belong, but without so much distraction.
 
+== Changelog ==
+
+= 1.0.0 =
+
+First release
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+
+No upgrades at this point
