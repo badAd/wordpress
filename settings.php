@@ -224,9 +224,8 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   // add Dev keys
   $callbackURL = plugin_dir_url('badad').'badad/callback.php'; // a better way
   echo '<h2>Add your badAd Developer API keys to get started!</h2>
-  <p>These keys can be found or created in your <a target="_blank" href="https://badad.one">badAd.one</a> Partner Center > Developer Center</p>
+  <p>These keys can be found or created in your badAd.one <i>Partner Center > Developer Center</i>. For help or to create an account, see the <a target="_blank" href="https://badad.one/444/site.html">help videos here</a>.</p>
   <p><pre>Dev Callback URL: <b>'.$callbackURL.'</b> <i>(for badAd Developer Center: Dev App settings)</i></pre></p>
-  <br>
   <form method="post" action="options.php">';
     settings_fields( 'devkeys' );
     echo '<h4>Keys</h4>
@@ -246,7 +245,7 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   <br><hr>
   <h2>Need help?</h2>
   <p><a target="_blank" href="https://badad.one/help_videos.php">Learn more</a> or sign up to start monetizing today!</p>
-  <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one">badAd.one</a> Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/help_videos.php">Learn more</a>.</p>';
+  <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one/444/site.html">badAd.one</a> Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/444/site.html">Learn more</a>.</p>';
 } elseif ( ( current_user_can($badAd_alevel) ) && ( $badad_connection_file == false ) && ( $badad_connection == 'notset' ) ) {
   // Forms to connect
 

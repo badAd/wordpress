@@ -17,7 +17,7 @@ License URI:       https://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
-The official plugin from badAd.one, this can help monetize your WordPress site by embedding badAd advertisements with shortcodes. Once you are a badAd monetizing Partner, this is plugin connects your WordPress site to the badAd "Dev API". Help videos are available.
+The official plugin from badAd.one, this can help monetize your WordPress site by embedding badAd advertisements with shortcodes. Once you are a badAd monetizing Partner, this is plugin connects your WordPress site to the badAd "Dev API". Help videos are available <a href="https://badad.one/444/site.html"> here</a>.
 
 Once connected, you can use two shortcodes:
 
