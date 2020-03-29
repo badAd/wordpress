@@ -91,14 +91,14 @@ $connectionKeyFile = plugin_dir_path( __FILE__ ).'connection.php';
 $connectionDelFile = plugin_dir_path( __FILE__ ).'disconnect.php';
 $badadSettingsPage = admin_url( 'options-general.php?page=badad-settings' );
 if (( ! $wp_filesystem->exists($connectionKeyFile) )
-  || (( $badad_connection == 'set' ) && ( ! strpos ( file_get_contents($connectionKeyFile), $badad_call_key) === true ))
-  || (( $badad_connection == 'set' ) && ( ! strpos ( file_get_contents($connectionKeyFile), $badad_siteslug) === true ))) {
+  || (( $badad_connection == 'set' ) && ( ! strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_call_key) === true ))
+  || (( $badad_connection == 'set' ) && ( ! strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_siteslug) === true ))) {
   $badad_connection_file = false;
 } else {
   $badad_connection_file = true;
 }
 
-if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile)) && ( $badad_connection == 'set' ) && (strpos ( file_get_contents($callbackFile), $write_dev_pub_key) === false ) ) ) {
+if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile)) && ( $badad_connection == 'set' ) && (strpos ( $wp_filesystem->get_contents($callbackFile), $write_dev_pub_key) === false ) ) ) {
   $callbackContentsPHP = <<<'EOP'
 <?php
 if ((isset($_POST['badad_connect_response']))
@@ -145,8 +145,8 @@ EOH;
 // Check connection.php
 if ((( ! $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'set' ))
    || (( $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'set' )
-      && ((strpos ( file_get_contents($connectionKeyFile), $badad_call_key) === false )
-       || (strpos ( file_get_contents($connectionKeyFile), $badad_siteslug) === false )))) {
+      && ((strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_call_key) === false )
+       || (strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_siteslug) === false )))) {
 
   // Write connection.php
   $connectionKeys = <<<CONN
@@ -167,7 +167,7 @@ CONN;
 }
 
 // Double check disconnect.php
-if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( file_get_contents($connectionDelFile), $badad_test_sec) === false ))) {
+if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( $wp_filesystem->get_contents($connectionDelFile), $badad_test_sec) === false ))) {
   $connectionDelete = <<<CDEL
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
