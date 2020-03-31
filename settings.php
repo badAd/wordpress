@@ -92,8 +92,8 @@ $connectionKeyFile = plugin_dir_path( __FILE__ ).'connection.php';
 $connectionDelFile = plugin_dir_path( __FILE__ ).'disconnect.php';
 $badadSettingsPage = admin_url( 'options-general.php?page=badad-settings' );
 if (( ! $wp_filesystem->exists($connectionKeyFile) )
-  || (( $badad_connection == 'set' ) && ( ! strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_call_key) === true ))
-  || (( $badad_connection == 'set' ) && ( ! strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_siteslug) === true ))) {
+  || (( $badad_connection == 'set' ) && ( ! strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_call_key ) === true ))
+  || (( $badad_connection == 'set' ) && ( ! strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_siteslug ) === true ))) {
   $badad_connection_file = false;
 } else {
   $badad_connection_file = true;
@@ -145,8 +145,8 @@ EOH;
 // Check connection.php
 if ((( ! $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'set' ))
    || (( $wp_filesystem->exists($connectionKeyFile) ) && ( $badad_connection == 'set' )
-      && ((strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_call_key) === false )
-       || (strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_siteslug) === false )))) {
+      && (( strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_call_key ) === false )
+       || ( strpos ( $wp_filesystem->get_contents($connectionKeyFile), $badad_siteslug ) === false )))) {
 
   // Write connection.php
   $connectionKeys = <<<CONN
