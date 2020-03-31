@@ -10,16 +10,16 @@ $badad_test_pub = get_option('badad_test_pub');
 $badad_test_sec = get_option('badad_test_sec');
 $badad_call_key = get_option('badad_call_key');
 $badad_siteslug = get_option('badad_siteslug');
-if (($badad_live_pub == '') || ($badad_live_pub == null)
- || ($badad_live_sec == '') || ($badad_live_sec == null)
- || ($badad_test_pub == '') || ($badad_test_pub == null)
- || ($badad_test_sec == '') || ($badad_test_sec == null)) {
+if (($badad_live_pub == '') || ($badad_live_pub == null) || (!isset($badad_live_pub)) || (strpos($badad_live_pub, 'live_pub_') === false)
+ || ($badad_live_sec == '') || ($badad_live_sec == null) || (!isset($badad_live_sec)) || (strpos($badad_live_sec, 'live_sec_') === false)
+ || ($badad_test_pub == '') || ($badad_test_pub == null) || (!isset($badad_test_pub)) || (strpos($badad_test_pub, 'test_pub_') === false)
+ || ($badad_test_sec == '') || ($badad_test_sec == null) || (!isset($badad_test_sec)) || (strpos($badad_test_sec, 'test_sec_') === false)) {
    $badad_plugin = 'notset';
  } else {
    $badad_plugin = 'set';
  }
-if (($badad_call_key == '') || ($badad_call_key == null)
- || ($badad_siteslug == '') || ($badad_siteslug == null)) {
+if (($badad_call_key == '') || ($badad_call_key == null) || (!isset($badad_call_key)) || (strpos($badad_call_key, 'call_key_') === false)
+ || ($badad_siteslug == '') || ($badad_siteslug == null) || (!isset($badad_siteslug)) || (!preg_match('/[A-Za-z]/', $badad_siteslug))) {
   $badad_connection = 'notset';
 } else {
   $badad_connection = 'set';
@@ -84,6 +84,7 @@ global $wp_filesystem;
 if (empty($wp_filesystem)) {
   require_once (ABSPATH . '/wp-admin/includes/file.php');
   WP_Filesystem();
+  WP_Filesystem_Direct();
 }
 // Write callback.php
 $callbackFile = plugin_dir_path( __FILE__ ).'callback.php';
@@ -97,8 +98,7 @@ if (( ! $wp_filesystem->exists($connectionKeyFile) )
 } else {
   $badad_connection_file = true;
 }
-
-if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile)) && ( $badad_connection == 'set' ) && (strpos ( $wp_filesystem->get_contents($callbackFile), $write_dev_pub_key) === false ) ) ) {
+if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile) ) && ( $badad_connection == 'set' ) && ( strpos ( $wp_filesystem->get_contents($callbackFile), $write_dev_pub_key ) === false ) ) ) {
   $callbackContentsPHP = <<<'EOP'
 <?php
 if ((isset($_POST['badad_connect_response']))
@@ -167,7 +167,7 @@ CONN;
 }
 
 // Double check disconnect.php
-if (( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (strpos ( $wp_filesystem->get_contents($connectionDelFile), $badad_test_sec) === false ))) {
+if ( ( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (  ( $badad_connection == 'set' ) && ( strpos ( $wp_filesystem->get_contents($connectionDelFile), $badad_test_sec ) === false ) ) ) ) {
   $connectionDelete = <<<CDEL
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
