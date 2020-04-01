@@ -58,7 +58,7 @@ function badad_refer( $atts = array() ) {
       if ($type == 'refer') {
         $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Claim your ad credit at badAd.one with this referral link..." rel="nofollow" href="' . $partner_resiteURL . '"><b>Claim your ad credit...</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
       } elseif ($type == 'pic') {
-        $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/assets/badadcred.gif" /></a></p>';
+        $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/art/badadcred.gif" /></a></p>';
       } elseif ($type == 'domain') {
         $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><b>badAd.one</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
       }

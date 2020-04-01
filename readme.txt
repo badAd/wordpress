@@ -9,7 +9,7 @@ Author:            badAd
 Requires at least: 5.3.2 
 Tested up to:      5.4.0
 Stable tag:        1.0.0
-Version:           1.0.0
+Version:           1.0.1
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
 License:           GPLv3 or later
@@ -80,8 +80,12 @@ We try to keep things organized and grouped so that badAd ads aren't confused wi
 
 First release
 
+= 1.0.1 =
+
+Cleanup for WordPress Directory listing
+
 == Upgrade Notice ==
 
-= 1.0.0 =
+= 1.0.1 =
 
-No upgrades at this point
+Non-essential
