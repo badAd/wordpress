@@ -7,7 +7,7 @@ Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2 
-Tested up to:      5.3.2
+Tested up to:      5.4.0
 Stable tag:        1.0.0
 Version:           1.0.0
 Requires PHP:      7.2.0
