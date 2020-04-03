@@ -18,7 +18,17 @@ if (($badad_live_pub == '') || ($badad_live_pub == null) || (!isset($badad_live_
  } else {
    $badad_plugin = 'set';
  }
-if (($badad_call_key == '') || ($badad_call_key == null) || (!isset($badad_call_key)) || (strpos($badad_call_key, 'call_key_') === false)
+if (($badad_call_key == 'delete') && ($badad_siteslug == 'delete')) {
+  // Delete connection.php
+  unlink(plugin_dir_path( __FILE__ ).'connection.php');
+  // Reset the options
+  update_option('badad_call_key', '');
+  update_option('badad_siteslug', '');
+  // Set our variables
+  $badad_call_key = null;
+  $badad_siteslug = null;
+  $badad_connection = 'notset';
+} elseif (($badad_call_key == '') || ($badad_call_key == null) || (!isset($badad_call_key)) || (strpos($badad_call_key, 'call_key_') === false)
  || ($badad_siteslug == '') || ($badad_siteslug == null) || (!isset($badad_siteslug)) || (!preg_match('/[A-Za-z]/', $badad_siteslug))) {
   $badad_connection = 'notset';
 } else {
@@ -58,7 +68,6 @@ elseif ($badAd_arole == 'editor') {$badAd_alevel = 'edit_others_posts';}
   - callback.php (created automatically by the badAd settings dashboard [this file, settings.php] after adding Dev Keys, used to talk to our API)
   - devkeys.php  (created automatically by the badAd settings dashboard from settings stored using the WP native settings-database calls)
   - connection.php (created when a user authorizes an API connection, used to store related connection "call" keys, these keys are added to the database from the file the first time it is created upon auto-redirect to the badAd settings dashboard)
-  - disconnect.php (created automatically by the badAd settings dashboard after a user authorizes an API connection, used to delete connection.php when clicking to Disconnect from the badAd settings dashboard, this file remains after connection.php is deleted, but is then useless)
 - Only devkeys.php and connection.php serve as our framework, having variables developers need to build on for plugins and themes dependent on this plugin:
 - What the framework files look like:
   - devkeys.php:
@@ -166,21 +175,6 @@ CONN;
   update_option('badad_siteslug', $partner_resiteSLUG);
 }
 
-// Double check disconnect.php
-if ( ( $wp_filesystem->exists($connectionKeyFile) ) && ( ( ! $wp_filesystem->exists($connectionDelFile) ) || (  ( $badad_connection == 'set' ) && ( strpos ( $wp_filesystem->get_contents($connectionDelFile), $badad_test_sec ) === false ) ) ) ) {
-  $connectionDelete = <<<CDEL
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-if ((\$_SERVER['REQUEST_METHOD'] === 'POST') && (isset(\$_POST['dk'])) && (\$_POST['dk'] == '$badad_test_sec')) {
-unlink('$connectionKeyFile');
-}
-header("Location: $badadSettingsPage");
-exit();
-?>
-CDEL;
-$wp_filesystem->put_contents( $connectionDelFile, $connectionDelete, FS_CHMOD_FILE ); // predefined mode settings for WP files
-}
-
 // Write devkeys.php
 if ( $badad_status == 'live' ) {
   $devKeysContents = <<< EDK
@@ -246,7 +240,7 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   <h2>Need help?</h2>
   <p><a target="_blank" href="https://badad.one/help_videos.php">Learn more</a> or sign up to start monetizing today!</p>
   <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one/444/site.html">badAd.one</a> Dev Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/444/site.html">Learn more</a>.</p>
-  <p><iframe width="640" height="360" scrolling="no" frameborder="0" style="border: none;" src="https://www.bitchute.com/embed/ROyed2cjJCg7/"></iframe></p>';
+  <p><iframe width="640" height="360" scrolling="no" frameborder="0" style="border: none;" src="https://www.bitchute.com/embed/VBTAknEAACKJ/"></iframe></p>';
 
 } elseif ( ( current_user_can($badAd_alevel) ) && ( $badad_connection_file == false ) && ( $badad_connection == 'notset' ) ) {
   // Forms to connect
@@ -287,7 +281,7 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   <h2>Need help?</h2>
   <p><a target="_blank" href="https://badad.one/help_videos.php">Learn more</a> or sign up to start monetizing today!</p>
   <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one/444/site.html">badAd.one</a> Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/444/site.html">Learn more</a>.</p>
-  <p><iframe width="640" height="360" scrolling="no" frameborder="0" style="border: none;" src="https://www.bitchute.com/embed/ROyed2cjJCg7/"></iframe></p>';
+  <p><iframe width="640" height="360" scrolling="no" frameborder="0" style="border: none;" src="https://www.bitchute.com/embed/mZSpkFWnCbxo/"></iframe></p>';
 
   // Be pretty
     echo "<br /><hr /><br />";
@@ -309,6 +303,7 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   echo "<p><pre><b>[badadrefer type=refer]</b> <i>Text: <b>Claim your ad credit...</b> (Default)</i></pre></p>";
   echo "<p><pre> <b>type=domain</b> <i>Text: <b>badAd.one</b></i></pre></p>";
   echo "<p><pre> <b>type=pic</b> <i>Shows a small banner-ad that cycles badAd logos and slogans (may change when plugin is updated)</i></pre></p>";
+  echo '<br><p><i>Watch the <a target="_blank" href="https://www.bitchute.com/video/BkIMAjWX4jii/">help video on badAd-WordPress shortcodes</a></i></p>';
   echo "<hr>";
 
 }
@@ -413,14 +408,15 @@ if ( current_user_can($badAd_alevel) ) {
 
   // Delete App Call keys
   if (( current_user_can($badAd_alevel) ) && ( isset($connection_meta_response) )) {
-    $disconnectkURL = plugin_dir_url('badad').'badad/disconnect.php';
     echo '
     <button class="button button-primary" onclick="showAppConnection()">App connection <b>&darr;&darr;&darr;</b></button>
     <div id="appConnection" style="display:none">
     <h4>Delete current App connection?</h4>
     <p><i>Currently connected to badAd App Project:<br>'.$connection_meta_response.'</i></p>
-    <form method="post" action="'.$disconnectkURL.'">
-    <input type="hidden" name="dk" value="'.$badad_test_sec.'">
+    <form method="post" action="options.php">';
+    settings_fields( 'connection' );
+    echo '<input type="hidden" name="badad_call_key" value="delete">
+    <input type="hidden" name="badad_siteslug" value="delete">
     <input type="checkbox" name="double_check_delete" value="certain" required>
     <label for="double_check_delete"> I am sure I want to delete this connection.</label>
     <input class="button button-secondary" type="submit" value="Disconnect and delete forever!">

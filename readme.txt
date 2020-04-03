@@ -8,7 +8,7 @@ Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2 
 Tested up to:      5.4.0
-Stable tag:        1.0.3
+Stable tag:        1.0.4
 Version:           1.0.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
@@ -96,9 +96,10 @@ Cleanup for WordPress Directory listing
 - Placed videos in proper place inside dashboard
 - Bug fix for callback URL
 
-Next update:
+= 1.0.4 =
 
-- Remove a bug that prevents Disconnecting
+- New help videos in the WordPress dashboard
+- Bug fix for Disconnecting from a Partner Account
 
 == Upgrade Notice ==
 
@@ -115,4 +116,10 @@ Non-essential
 Critical update!
 
 - This fixes a bug that prevented the callback URL from working
+
+= 1.0.4 =
+
+Critical update!
+
+- This fixes a bug that prevented Disconnecting from a Partner Account
 
