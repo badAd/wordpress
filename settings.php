@@ -98,7 +98,7 @@ if (( ! $wp_filesystem->exists($connectionKeyFile) )
 } else {
   $badad_connection_file = true;
 }
-if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile) ) && ( $badad_connection == 'set' ) && ( strpos ( $wp_filesystem->get_contents($callbackFile), $write_dev_pub_key ) === false ) ) ) {
+if ( ( ! $wp_filesystem->exists($callbackFile)) || ( ($wp_filesystem->exists($callbackFile) ) && ( $badad_plugin == 'set' ) && ( strpos ( $wp_filesystem->get_contents($callbackFile), $write_dev_pub_key ) === false ) ) ) {
   $callbackContentsPHP = <<<'EOP'
 <?php
 if ((isset($_POST['badad_connect_response']))
@@ -245,7 +245,9 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
   <br><hr>
   <h2>Need help?</h2>
   <p><a target="_blank" href="https://badad.one/help_videos.php">Learn more</a> or sign up to start monetizing today!</p>
-  <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one/444/site.html">badAd.one</a> Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/444/site.html">Learn more</a>.</p>';
+  <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one/444/site.html">badAd.one</a> Dev Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/444/site.html">Learn more</a>.</p>
+  <p><iframe width="640" height="360" scrolling="no" frameborder="0" style="border: none;" src="https://www.bitchute.com/embed/ROyed2cjJCg7/"></iframe></p>';
+
 } elseif ( ( current_user_can($badAd_alevel) ) && ( $badad_connection_file == false ) && ( $badad_connection == 'notset' ) ) {
   // Forms to connect
 
@@ -280,7 +282,12 @@ if ( ( current_user_can($badAd_dlevel) ) && ( $badad_plugin == 'notset' ) ) {
 
   <input class="button button-primary" type="submit" value="Login to Connect..." class="formbutton" />
   <br />
-  </form>';
+  </form>
+  <br><hr>
+  <h2>Need help?</h2>
+  <p><a target="_blank" href="https://badad.one/help_videos.php">Learn more</a> or sign up to start monetizing today!</p>
+  <p>You must be registered, have purchased one (ridiculously cheap) ad, and confirmed your email to be a <a target="_blank" href="https://badad.one/444/site.html">badAd.one</a> Partner. It could take as little as $1 and 10 minutes to be up and running! <a target="_blank" href="https://badad.one/444/site.html">Learn more</a>.</p>
+  <p><iframe width="640" height="360" scrolling="no" frameborder="0" style="border: none;" src="https://www.bitchute.com/embed/ROyed2cjJCg7/"></iframe></p>';
 
   // Be pretty
     echo "<br /><hr /><br />";

@@ -25,3 +25,10 @@ If you want to use this plugin for your own shortcodes, you should build your sh
 If changes to these two files becomes necessary, we will aim for minimal disruption, notices of depreciation, and legacy support as long as possible. Any developer building on this should follow the [GitHub](https://github.com/badAd/wordpress) repo (badad/wordpress) for the most current information and updates. We will try to mention any depreciations in changelog titles.
 
 For information on how this plugin works and how you can build on, see the [Dev Help](https://badad.one/help_dev.php) seciton of the badAd website.
+
+# GitHub vs WordPress Directory
+The WordPress plugin Directory version of this plugin does not include this README.md file, nor the assets folder. Both of these may be deleted if you plan to use thid plugin from GitHub.
+
+# Development and Stability
+This is the development channel for this plugin and it is not recommended to use this GitHub repo to supply your plugin for a production site. For the current, stable plugin, use the [WordPress Directory version](https://wordpress.org/plugins/badad/).
+

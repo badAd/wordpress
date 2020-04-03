@@ -8,8 +8,8 @@ Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2 
 Tested up to:      5.4.0
-Stable tag:        1.0.0
-Version:           1.0.1
+Stable tag:        1.0.3
+Version:           1.0.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
 License:           GPLv3 or later
@@ -17,7 +17,7 @@ License URI:       https://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
-The official plugin from badAd.one, this can help monetize your WordPress site by embedding badAd advertisements with shortcodes. Once you are a badAd monetizing Partner, this is plugin connects your WordPress site to the badAd "Dev API". Help videos are available <a href="https://badad.one/444/site.html"> here</a>.
+The official plugin from badAd.one, this can help monetize your WordPress site by embedding badAd advertisements with shortcodes.
 
 Once connected, you can use two shortcodes:
 
@@ -25,6 +25,8 @@ Once connected, you can use two shortcodes:
 2. To embed a styled referral link for you and others to receive free ad credits, also adding to your Partner click count
 
 All the settings are on one page in your WordPress Dashboard with an easy walk-through.
+
+This plugin is intended for badAd Partners, but it is easy to become one. Once you are a badAd monetizing Partner, this is plugin connects your WordPress site to the badAd "Dev API" mentioned in the <a href="https://badad.one/444/site.html"> help videos</a>.
 
 badAd.one is an advertising network that started in early 2020.
 
@@ -70,9 +72,9 @@ Technically, everything you add to any website will slow it down. But, badAd tak
 
 = Do these ads make my website look ugly? =
 
-They shouldn't. Our text ads try their best to inherit the styling of your WordPress theme, so they fit nicely, hopefully having some of the same fonts, etc.
+They shouldn't. Our text ads try their best to inherit the styling of your WordPress theme, hopefully having some of the same fonts, etc.
 
-We try to keep things organized and grouped so that badAd ads aren't confused with your WordPress site's content. These ads should still should look like they belong, but without so much distraction.
+We try to keep things organized and grouped so that badAd ads aren't confused with your WordPress site's content, but still should fit nicely alongside your content.
 
 == Changelog ==
 
@@ -84,8 +86,33 @@ First release
 
 Cleanup for WordPress Directory listing
 
+= 1.0.2 =
+
+- Help videos embedded inside the app when no keys are installed
+- Improved description
+
+= 1.0.3 =
+
+- Placed videos in proper place inside dashboard
+- Bug fix for callback URL
+
+Next update:
+
+- Remove a bug that prevents Disconnecting
+
 == Upgrade Notice ==
 
 = 1.0.1 =
 
 Non-essential
+
+= 1.0.2 =
+
+Non-essential
+
+= 1.0.3 =
+
+Critical update!
+
+- This fixes a bug that prevented the callback URL from working
+
