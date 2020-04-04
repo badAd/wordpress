@@ -8,7 +8,7 @@ Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
 Tested up to:      5.4.0
-Stable tag:        1.0.5
+Stable tag:        1.0.6
 Version:           1.0.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
@@ -105,6 +105,10 @@ Cleanup for WordPress Directory listing
 
 - Bug fix for breaking plugin after update
 
+= 1.0.6 =
+
+- More robust key settings framework for migrations and updates
+
 == Upgrade Notice ==
 
 = 1.0.1 =
@@ -132,3 +136,9 @@ Critical update!
 Critical update!
 
 - This fixes a bug that breaks the plugin after updating
+
+= 1.0.6 =
+
+Non-essential
+
+- More robust key settings framework
