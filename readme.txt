@@ -6,9 +6,9 @@ Plugin URI:        https://github.com/badAd/wordpress
 Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
-Requires at least: 5.3.2 
+Requires at least: 5.3.2
 Tested up to:      5.4.0
-Stable tag:        1.0.4
+Stable tag:        1.0.5
 Version:           1.0.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
@@ -101,6 +101,10 @@ Cleanup for WordPress Directory listing
 - New help videos in the WordPress dashboard
 - Bug fix for Disconnecting from a Partner Account
 
+= 1.0.5 =
+
+- Bug fix for breaking plugin after update
+
 == Upgrade Notice ==
 
 = 1.0.1 =
@@ -123,3 +127,8 @@ Critical update!
 
 - This fixes a bug that prevented Disconnecting from a Partner Account
 
+= 1.0.5 =
+
+Critical update!
+
+- This fixes a bug that breaks the plugin after updating
