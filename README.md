@@ -26,9 +26,12 @@ If changes to these two files becomes necessary, we will aim for minimal disrupt
 
 For information on how this plugin works and how you can build on, see the [Dev Help](https://badad.one/help_dev.php) seciton of the badAd website.
 
-# GitHub vs WordPress Directory
+# GitHub vs WordPress directory
 The WordPress plugin Directory version of this plugin does not include this README.md file, nor the assets folder. Both of these may be deleted if you plan to use thid plugin from GitHub.
 
-# Development and Stability
+# Development and stability
 This is the development channel for this plugin and it is not recommended to use this GitHub repo to supply your plugin for a production site. For the current, stable plugin, use the [WordPress Directory version](https://wordpress.org/plugins/badad/).
 
+# Dev Tour video
+Get an under-the-hood walkthrough of what how this plugin operates and how you can build on it...
+## [badAd-WordPress Dev: Plugin Tour](https://www.bitchute.com/video/wHKLAYdIFTws)
