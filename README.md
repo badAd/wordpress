@@ -34,4 +34,4 @@ This is the development channel for this plugin and it is not recommended to use
 
 # Dev Tour video
 Get an under-the-hood walkthrough of what how this plugin operates and how you can build on it...
-## [badAd-WordPress Dev: Plugin Tour](https://www.bitchute.com/video/wHKLAYdIFTws)
+## Video: [badAd-WordPress Dev: Plugin Tour](https://www.bitchute.com/video/wHKLAYdIFTws)
