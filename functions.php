@@ -16,7 +16,7 @@ function badad_keys() {
   // See if necessary files exist
   if ( ( ! $wp_filesystem->exists($devkeyFile) ) || ( ! $wp_filesystem->exists($connectionFile) ) ) {
     // Make sure we create any files if settings were in the database
-		include_once (plugin_dir_path( __FILE__ ).'files.php');
+		include (plugin_dir_path( __FILE__ ).'files.php');
   }
 
   if ( $wp_filesystem->exists($devkeyFile) ) {
