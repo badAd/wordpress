@@ -8,7 +8,7 @@ Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
 Tested up to:      5.4.0
-Stable tag:        1.0.7
+Stable tag:        1.0.8
 Version:           1.0.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
@@ -78,77 +78,15 @@ We try to keep things organized and grouped so that badAd ads aren't confused wi
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.8 =
 
-First release
+Banner improvements
 
-= 1.0.1 =
-
-Cleanup for WordPress Directory listing
-
-= 1.0.2 =
-
-- Help videos embedded inside the app when no keys are installed
-- Improved description
-
-= 1.0.3 =
-
-- Placed videos in proper place inside dashboard
-- Bugfix for callback URL
-
-= 1.0.4 =
-
-- New help videos in the WordPress dashboard
-- Bugfix for Disconnecting from a Partner Account
-
-= 1.0.5 =
-
-- Bugfix for breaking plugin after update
-
-= 1.0.6 =
-
-- More robust key settings framework for migrations and updates
-
-= 1.0.7 =
-
-- Bugfix for break on Disconnect, solution: lighter and more streamlined
+Clear changelog of bugfix updates
 
 == Upgrade Notice ==
 
-= 1.0.1 =
+= 1.0.8 =
 
 Non-essential
 
-= 1.0.2 =
-
-Non-essential
-
-= 1.0.3 =
-
-Critical update!
-
-- This fixes a bug that prevented the callback URL from working
-
-= 1.0.4 =
-
-Critical update!
-
-- This fixes a bug that prevented Disconnecting from a Partner Account
-
-= 1.0.5 =
-
-Critical update!
-
-- This fixes a bug that breaks the plugin after updating
-
-= 1.0.6 =
-
-Non-essential
-
-- More robust key settings framework
-
-= 1.0.7 =
-
-Critical update!
-
-- This fixes a bug that breaks the plugin after Disconnecting
