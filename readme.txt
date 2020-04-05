@@ -8,7 +8,7 @@ Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
 Tested up to:      5.4.0
-Stable tag:        1.0.6
+Stable tag:        1.0.7
 Version:           1.0.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
@@ -94,20 +94,24 @@ Cleanup for WordPress Directory listing
 = 1.0.3 =
 
 - Placed videos in proper place inside dashboard
-- Bug fix for callback URL
+- Bugfix for callback URL
 
 = 1.0.4 =
 
 - New help videos in the WordPress dashboard
-- Bug fix for Disconnecting from a Partner Account
+- Bugfix for Disconnecting from a Partner Account
 
 = 1.0.5 =
 
-- Bug fix for breaking plugin after update
+- Bugfix for breaking plugin after update
 
 = 1.0.6 =
 
 - More robust key settings framework for migrations and updates
+
+= 1.0.7 =
+
+- Bugfix for break on Disconnect, solution: lighter and more streamlined
 
 == Upgrade Notice ==
 
@@ -142,3 +146,9 @@ Critical update!
 Non-essential
 
 - More robust key settings framework
+
+= 1.0.7 =
+
+Critical update!
+
+- This fixes a bug that breaks the plugin after Disconnecting

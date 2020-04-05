@@ -3,7 +3,7 @@
 * @package badAd
 */
 // Keys & Files
-include_once (plugin_dir_path( __FILE__ ).'files.php');
+include (plugin_dir_path( __FILE__ ).'files.php');
 
 // Fetch the settings from the files we just made
 extract(badad_keys());
