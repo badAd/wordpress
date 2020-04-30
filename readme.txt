@@ -7,9 +7,9 @@ Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
-Tested up to:      5.4.0
-Stable tag:        1.0.8
-Version:           1.0.2
+Tested up to:      5.4.1
+Stable tag:        1.0.9
+Version:           1.0.9
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
 License:           GPLv3 or later
@@ -84,9 +84,13 @@ Banner improvements
 
 Clear changelog of bugfix updates
 
+= 1.0.9 =
+
+Compatible with WordPress 5.4.1
+
 == Upgrade Notice ==
 
-= 1.0.8 =
+= 1.0.9 =
 
 Non-essential
 

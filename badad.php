@@ -7,7 +7,7 @@
 Plugin Name: badAd
 Plugin URI: https://github.com/badAd/wordpress
 Description: The official badAd.one plugin for WordPress: With a monetizing partner account, use this plugin to easily monetize your WordPress site with text ads and share your own signup referral link. If you need help with your badAd your account, you can <a href="https://badad.one/444/site.html">get help here</a>.
-Version: 1.0.8
+Version: 1.0.9
 Author: badAd
 Author URI: https://badad.one
 License: GPLv3 or later
