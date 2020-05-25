@@ -7,9 +7,9 @@ Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
-Tested up to:      5.4.1
-Stable tag:        1.0.9
-Version:           1.0.9
+Tested up to:      5.4.2
+Stable tag:        1.0.10
+Version:           1.0.10
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
 License:           GPLv3 or later
@@ -76,6 +76,12 @@ They shouldn't. Our text ads try their best to inherit the styling of your WordP
 
 We try to keep things organized and grouped so that badAd ads aren't confused with your WordPress site's content, but still should fit nicely alongside your content.
 
+= Does this work on multisite? = 
+
+No, but multisite (with all the juicy options) is coming if the product becomes popular.
+
+You can use the normal "Embed Code" (without this plugin) from the badAd Partner Center just fine on multisite.
+
 == Changelog ==
 
 = 1.0.8 =
@@ -88,9 +94,13 @@ Clear changelog of bugfix updates
 
 Compatible with WordPress 5.4.1
 
+= 1.0.10 =
+
+Compatible with WordPress 5.4.2
+
 == Upgrade Notice ==
 
-= 1.0.9 =
+= 1.0.10 =
 
 Non-essential
 
