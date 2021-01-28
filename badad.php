@@ -7,7 +7,7 @@
 Plugin Name: badAd
 Plugin URI: https://github.com/badAd/wordpress
 Description: The official badAd.one plugin for WordPress: With a monetizing partner account, use this plugin to easily monetize your WordPress site with text ads and share your own signup referral link. If you need help with your badAd your account, you can <a href="https://badad.one/444/site.html">get help here</a>.
-Version: 1.0.10
+Version: 1.2
 Author: badAd
 Author URI: https://badad.one
 License: GPLv3 or later
@@ -28,6 +28,33 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with badAd. If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
+*/
+
+/* Note to developers and WordPress.org reviewers
+
+- For speed, keys for regular calls to the badAd API should utilize include(), rather than SQL queries
+- The variable values for these files are stored in wp_options via the WordPress API; upon viewing the plugin dashboard, the plugin renders these files if the files are missing
+- These four files are created in the "connection/" folder when adding keys: $ID = get_current_blog_id();
+  - $ID-callback.php (created automatically by the badAd settings dashboard [this file, settings.php] after adding Dev Keys, used to talk to our API)
+  - $ID-devkeys.php  (created automatically by the badAd settings dashboard from settings stored using the WP native settings-database calls)
+  - $ID-connection.php (created when a user authorizes an API connection, used to store related connection "call" keys, these keys are added to the database from the file the first time it is created upon auto-redirect to the badAd settings dashboard)
+  - $ID-disconnect.php (used to disconnect the authorized API connection)
+- Only $ID-devkeys.php and $ID-connection.php serve as our framework, having variables developers need to build on for plugins and themes dependent on this plugin:
+- What the framework files look like:
+  - $ID-devkeys.php:
+    ```
+    <?php
+    if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+    $my_developer_pub_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
+    $my_developer_sec_key = 'some_sec_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
+    ```
+  - $ID-connection.php:
+    ```
+    <?php
+    if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+    $partner_call_key = 'some_pub_0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0abcd';
+    $partner_resiteSLUG = '0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdfghijklmnopqruvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghij';
+    ```
 */
 
 // Classic security
@@ -76,7 +103,7 @@ class Bad_Ad {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
-		add_action('admin_init', array( $this, 'badad_settings_init' ) );
+		add_action( 'admin_init', array( $this, 'badad_settings_init' ) );
 	}
 
 	public function settings_link( $links ) {

@@ -7,9 +7,9 @@ Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
-Tested up to:      5.5
-Stable tag:        1.0.10
-Version:           1.0.10
+Tested up to:      5.6
+Stable tag:        1.2
+Version:           1.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
 License:           GPLv3 or later
@@ -76,35 +76,34 @@ They shouldn't. Our text ads try their best to inherit the styling of your WordP
 
 We try to keep things organized and grouped so that badAd ads aren't confused with your WordPress site's content, but still should fit nicely alongside your content.
 
-= Does this work on multisite? = 
+= Does this work on multisite? =
 
-No, but multisite (with all the juicy options) is coming if the product becomes popular.
-
-You can use the normal "Embed Code" (without this plugin) from the badAd Partner Center just fine on multisite.
+Yes, as of version 1.1 it works on multisite.
 
 == Changelog ==
 
-= 1.0.8 =
+= 1.2 =
 
-Banner improvements
+1. Support for multisite
 
-Clear changelog of bugfix updates
+2. Settings page improvements
+- More shortcode examples and explanation
+- Styling is more readable
+- Some text changed to be more clear
+- Layout and behavior unchanged
 
-= 1.0.9 =
+3. Streamlined database workflow for storing keys
+- This is backend behavior which web users won't notice
+- Reduces security risk
+- Porting database to new web hosting or refreshing plugin installation should preserve the API connection
 
-Compatible with WordPress 5.4.1
-
-= 1.0.10 =
-
-Compatible with WordPress 5.4.2
-
-= 1.0.11 =
-
-Compatible with WordPress 5.5
-
-== Upgrade Notice ==
-
-= 1.0.11 =
-
-Non-essential
-
+4. Developer notes:
+- Multisite: Callback files are prefixed with the site ID, seamlessly working with both multisite and single sites
+- All keys and settings are stored in the database
+- The only key stored in the file system is the current test/live public API key, cached in the "callback" subdirectory
+- Callback files are created automatically when visiting the admin dashboard, which is the only time they are needed
+- Creating callback files via `put_contents()` is less cost and databse size than creating a custom post type
+- Porting the database to a new cloud location should preserve the API connection, whether or not the old plugin folder is ported also
+- Callback files are cached in the "callback" subdirectory for API use, but they are largely superflous to web host admins since they are only-always confirmed/created only-always when they are needed
+- Visiting the admin dashboard will automatically confirm and/or create the callback file, but the callback is only needed if making or checking the API connection, which requires visiting the plugin settings page in admin dashboard anyway. So, this is moot, but may be useful information for some developers.
+- Security improvement: The callback file simply captures and redirects the API connection response to the admin dashboard, which guarantees more security and level permissions checks so script kiddies have less room to mess

@@ -3,53 +3,26 @@
 * @package badAd
 */
 
-// Keys
-function badad_keys() {
-  $connectionFile = plugin_dir_path( __FILE__ ) . 'connection.php';
-  $devkeyFile = plugin_dir_path( __FILE__ ) . 'devkeys.php';
+// Site ID -based connection.php location
+$siteFilePrefix = get_current_blog_id() ? 'callback/' . get_current_blog_id() . '-' : 'callback/';
+$callbackFile = plugin_dir_path( __FILE__ ) . $siteFilePrefix . 'callback.php';
+
+// Toolbox for callback files
+function badad_files() {
+  global $siteFilePrefix;
+  global $callbackFile;
+
+  // Initiate $wp_filesystem now so we can call WP_Filesystem_Direct(); later
   global $wp_filesystem;
   if (empty($wp_filesystem)) {
-    require_once (ABSPATH . '/wp-admin/includes/file.php');
+    require_once (ABSPATH . 'wp-admin/includes/file.php');
     WP_Filesystem();
   }
-
-  // See if necessary files exist
-  if ( ( ! $wp_filesystem->exists($devkeyFile) ) || ( ! $wp_filesystem->exists($connectionFile) ) ) {
-    // Make sure we create any files if settings were in the database
-		include (plugin_dir_path( __FILE__ ).'files.php');
-  }
-
-  if ( $wp_filesystem->exists($devkeyFile) ) {
-    include $devkeyFile;
-    $badad_devset = true;
-  } else {
-    $my_developer_pub_key = '';
-    $my_developer_sec_key = '';
-    $badad_devset = false;
-  }
-  if ( $wp_filesystem->exists($connectionFile) ) {
-    include $connectionFile; // Make sure we get our variable one way or another
-    $partner_resiteURL = "https://badad.one/$partner_resiteSLUG/site.html";
-    //$badad_connection_file = true;
-  } else {
-    $partner_call_key = '';
-    $partner_resiteSLUG = '444';
-    $partner_resiteURL = "https://badad.one/$partner_resiteSLUG/site.html";
-    //$badad_connection_file = false;
-  }
-
-  // We need our variables
-  return compact(
-    'partner_call_key',
-    'partner_resiteSLUG',
-    'partner_resiteURL',
-    'my_developer_pub_key',
-    'my_developer_sec_key',
-    'badad_devset'
-    //'badad_connection_file'
-  );
 }
-extract(badad_keys());
+badad_files();
+
+// Keys & Files
+include (plugin_dir_path( __FILE__ ) . 'checks.php');
 
 // Pic Credit-referral
 function badad_refer( $atts = array() ) {
@@ -57,11 +30,11 @@ function badad_refer( $atts = array() ) {
 
   // Defaults
     extract(shortcode_atts(array(
-      'type' => 'refer'
+      'type' => 'domain'
     ), $atts));
 
     if (isset($type)) {
-      if ($type == 'refer') {
+      if ($type == 'claim') {
         $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Claim your ad credit at badAd.one with this referral link..." rel="nofollow" href="' . $partner_resiteURL . '"><b>Claim your ad credit...</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
       } elseif ($type == 'pic') {
         $content = '<p style="text-align: center;"><a class="badad_shortcode badad_gif" id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><img class="aligncenter" id="baVrtImg1" alt="badAad.one" src="' . plugins_url() . '/badad/art/badadcred.gif" /></a></p>';
@@ -81,9 +54,9 @@ function badad_ads( $atts = array() ) {
 
   // Defaults
     extract(shortcode_atts(array(
-      'num' => 2,
-      'balink' => 'no',
-      'valign' => 'no',
+      'num' => 10,
+      'balink' => 'yes',
+      'valign' => 'yes',
       'hit' => 'no'
     ), $atts));
 
@@ -101,7 +74,7 @@ function badad_ads( $atts = array() ) {
       $balink = false;
     }
     // $valign
-    if ((isset($valign)) && ($valign == 'yes')) { // Human setting is reverse from the api
+    if ((isset($valign)) && ($valign == 'yes')) { // Human setting is reverse from the api (true = horizantal)
       $valign = false;
     } else {
       $valign = true;
@@ -148,6 +121,7 @@ add_shortcode('badad', 'badad_ads');
 
 // Fetch Partner meta
 function badad_meta() {
+
   global $my_developer_sec_key;
   global $partner_call_key;
 
