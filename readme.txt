@@ -86,18 +86,21 @@ Yes, as of version 1.1 it works on multisite.
 
 1. Support for multisite
 
-2. Settings page improvements
+2. Shortcode defaults changed
+- To settings more likely to be common
+
+3. Settings page improvements
 - More shortcode examples and explanation
 - Styling is more readable
-- Some text changed to be more clear
-- Layout and behavior unchanged
+- Some explanations are more clearly worded
+- Layout is unchanged
 
-3. Streamlined database workflow for storing keys
+4. Streamlined database workflow for storing keys
 - This is backend behavior which web users won't notice
 - Reduces security risk
 - Porting database to new web hosting or refreshing plugin installation should preserve the API connection
 
-4. Developer notes:
+5. Developer notes:
 - Multisite: Callback files are prefixed with the site ID, seamlessly working with both multisite and single sites
 - All keys and settings are stored in the database
 - The only key stored in the file system is the current test/live public API key, cached in the "callback" subdirectory
