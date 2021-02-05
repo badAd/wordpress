@@ -7,7 +7,7 @@ Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
-Tested up to:      5.6
+Tested up to:      5.6.1
 Stable tag:        1.2
 Version:           1.2
 Requires PHP:      7.2.0
@@ -100,7 +100,7 @@ Yes, as of version 1.1 it works on multisite.
 - Reduces security risk
 - Porting database to new web hosting or refreshing plugin installation should preserve the API connection
 
-5. Developer notes:
+5. Developer notes
 - Multisite: Callback files are prefixed with the site ID, seamlessly working with both multisite and single sites
 - All keys and settings are stored in the database
 - The only key stored in the file system is the current test/live public API key, cached in the "callback" subdirectory
@@ -110,3 +110,8 @@ Yes, as of version 1.1 it works on multisite.
 - Callback files are cached in the "callback" subdirectory for API use, but they are largely superflous to web host admins since they are only-always confirmed/created only-always when they are needed
 - Visiting the admin dashboard will automatically confirm and/or create the callback file, but the callback is only needed if making or checking the API connection, which requires visiting the plugin settings page in admin dashboard anyway. So, this is moot, but may be useful information for some developers.
 - Security improvement: The callback file simply captures and redirects the API connection response to the admin dashboard, which guarantees more security and level permissions checks so script kiddies have less room to mess
+
+= 1.2.1 =
+
+- Backend tweaks so both shortcodes render more similarly in HTML
+- Tested wtih WP 5.6.1

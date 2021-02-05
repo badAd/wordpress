@@ -42,7 +42,7 @@ function badad_refer( $atts = array() ) {
         $content = '<hr class="badad_shortcode badad_txt badad_hr_top"><p style="text-align: center;"><a id="baVrtLnk1" title="Unannoying advertising" rel="nofollow" href="' . $partner_resiteURL . '"><b>badAd.one</b></a></p><hr class="badad_shortcode badad_txt badad_hr_bot">';
       }
     }
-
+    $content = '<div class="badad_ad badad_container">'.$content.'</div>';
   return $content;
 }
 add_shortcode('badadrefer', 'badad_refer');
@@ -113,7 +113,7 @@ function badad_ads( $atts = array() ) {
   if ((isset($response)) && ($response != '')) {
     // Filter this glob we got back through the API
     $clean_response = $response['body'];
-    echo "<p></p>$clean_response<p></p>"; // This $response is the HTML payload fetched from our Dev API
+    echo $clean_response; // This $response is the HTML payload fetched from our Dev API
   }
 
 }
