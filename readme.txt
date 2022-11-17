@@ -7,9 +7,9 @@ Tags:              advertise, monetize, ads, embed, ad shortcode
 Author URI:        https://badad.one
 Author:            badAd
 Requires at least: 5.3.2
-Tested up to:      5.6.1
-Stable tag:        1.2
-Version:           1.2
+Tested up to:      5.8.3
+Stable tag:        1.2.2
+Version:           1.2.2
 Requires PHP:      7.2.0
 Donate link:       https://jesse.coffee/paypal
 License:           GPLv3 or later
@@ -80,6 +80,10 @@ We try to keep things organized and grouped so that badAd ads aren't confused wi
 
 Yes, as of version 1.1 it works on multisite.
 
+= It doesn't say it is tested with the current version of WordPress. Will it still work? =
+
+Note this light-weight plugin easily endures WordPress updates, so it may not be updated with each minor WP update. This is intended to cause less work on your back end, but know that we are actively watching and testing this plugin!
+
 == Changelog ==
 
 = 1.2 =
@@ -115,3 +119,8 @@ Yes, as of version 1.1 it works on multisite.
 
 - Backend tweaks so both shortcodes render more similarly in HTML
 - Tested wtih WP 5.6.1
+
+= 1.2.2 =
+
+- Note this light-weight plugin easily endures WordPress updates, so it may not be updated with each minor WP update. This is intended to cause less work on your back end, but know that we are actively watching and testing this plugin!
+- Tested wtih WP 5.8.3
